@@ -1,0 +1,90 @@
+def show_rules():
+    print('Press Number from 1-9 on your turn to insert to your marker on position as  shown in the board below:\n')
+    print('\t| 1 | 2 | 3 |')
+    print('\t| 4 | 5 | 6 |')
+    print('\t| 7 | 8 | 9 |')
+
+def show_board():
+    global board
+    print()
+    print('\t|{}|{}|{}|'.format(board[0], board[1], board[2]))
+    print('\t|{}|{}|{}|'.format(board[3], board[4], board[5]))
+    print('\t|{}|{}|{}|'.format(board[6], board[7], board[8]))
+
+def turn():
+    global board
+    global marker
+
+    marker=' X ' if marker==' O ' else ' O '
+
+    print("\n{}'s turn".format(marker))
+
+    position = int(input('Enter marker\'s position(1-9): ')) - 1 
+
+    while position<0 or position>8:
+        print('Invalid Input')
+        position = int(input('Enter valid position(1-9): ')) - 1
+    else:
+        while position in label:
+            print('You cannot overwrite.')
+            position = int(input('Enter new position(1-9): ')) - 1
+        else:
+            label.append(position)    
+           # print(label)
+    
+    board[position]=marker
+
+     
+
+def check_row():
+    for i in range(0,9,3):
+        if ((board[i]==board[i+1]==board[i+2]) and board[i]!=' - '):
+            return True
+    return False    
+
+
+def check_column():
+    for i in range(3):
+        if ((board[i]==board[i+3]==board[i+6]) and board[i]!=' - '):
+            return True
+    return False
+
+def check_diagnol():
+    if ((board[0]==board[4]==board[8]) or  (board[2]==board[4]==board[6]))and board[4]!=' - ':
+        return True
+    return False    
+
+def check_winner():
+    if check_row() or check_column() or check_diagnol():
+        print('\n\t{} wins!!.Congratulations🎉'.format(marker))
+        return True
+    return False
+
+def check_tie():
+    if ' - ' in board:
+        return False
+    print('No one wins.\n Both played well!!')
+    return True        
+
+
+
+def play():
+    show_rules()
+    while True:
+        turn()
+        show_board()
+        if check_winner() or check_tie():
+            break    
+
+
+
+
+board = [' - ', ' - ', ' - ',
+         ' - ', ' - ', ' - ',
+         ' - ', ' - ', ' - ']
+
+marker=' X '
+
+label=[]
+
+play()
